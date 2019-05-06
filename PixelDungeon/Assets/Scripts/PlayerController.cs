@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     float speedMultiplier = 8.0f;
-    SpriteRenderer renderer;
+    new SpriteRenderer renderer;
     new Rigidbody2D rigidbody;
     Animator animator;
 
