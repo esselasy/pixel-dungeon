@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    GameObject player;
+    GameObject hero;
     new Camera camera;
 
     float size = 9;         // Orthographic camera size
@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        player = GameObject.Find("Player");
+        hero = GameObject.FindWithTag("Player");
         camera = GetComponent<Camera>();
     }
 
@@ -22,8 +22,8 @@ public class CameraController : MonoBehaviour
     {
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            Vector3 playerPos = player.transform.position;
-            transform.position = new Vector3(playerPos.x, playerPos.y, transform.position.z);
+            Vector3 heroPos = hero.transform.position;
+            transform.position = new Vector3(heroPos.x, heroPos.y, transform.position.z);
         }
 
         if (Input.GetAxis("Mouse ScrollWheel") != 0)

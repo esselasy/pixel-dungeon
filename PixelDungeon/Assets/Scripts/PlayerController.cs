@@ -26,12 +26,12 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
         {
-            animator.SetTrigger("PlayerIdle");
+            animator.SetTrigger("HeroIdle");
         }
         else
         {
             renderer.flipX = Input.GetAxis("Horizontal") < 0;
-            animator.SetTrigger("PlayerRun");
+            animator.SetTrigger("HeroRun");
         }
     }
 }
