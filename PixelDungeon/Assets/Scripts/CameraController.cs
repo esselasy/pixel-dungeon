@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetAxis("Mouse ScrollWheel") != 0)
         {
-            print("Zoom " + Input.GetAxis("Mouse ScrollWheel"));
+            //print("Zoom " + Input.GetAxis("Mouse ScrollWheel"));
             Zoom();
         }
     }
