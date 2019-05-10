@@ -8,7 +8,12 @@ public enum HeroStatus { None, HeroIdle, HeroRun, HeroAttack, HeroDie };
 
 public class HeroController : MonoBehaviour
 {
+    [SerializeField]
+    Vector3 visibleAreaSize = new Vector3(5, 5, 0);
+    Vector3 attackAreaSize = new Vector3(3, 3, 0);
+
     HeroStatus status = HeroStatus.None;
+
     readonly float maxDistanceDelta = 0.1f;
     List<Vector3> path = new List<Vector3>();
     Vector3 nextPoint;
@@ -16,7 +21,12 @@ public class HeroController : MonoBehaviour
     new SpriteRenderer renderer;
     new Rigidbody2D rigidbody;
     Animator animator;
+
+    Grid grid;
     Tilemap wall;
+
+    Rect VisibleArea { get { return new Rect(transform.position - visibleAreaSize / 2, visibleAreaSize); } }
+    Rect AttackArea { get { return new Rect(transform.position - attackAreaSize / 2, attackAreaSize); } }
 
     public HeroStatus Status
     {
@@ -34,6 +44,8 @@ public class HeroController : MonoBehaviour
         renderer = GetComponent<SpriteRenderer>();
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        grid = GameObject.Find("Terrain").GetComponent<Grid>();
         wall = GameObject.Find("Wall").GetComponent<Tilemap>();
     }
 
@@ -76,26 +88,34 @@ public class HeroController : MonoBehaviour
 
     void Stop()
     {
-        // 셀의 중심으로 옮긴다.
-        Vector3Int cellPosition = wall.WorldToCell(transform.position);
-        rigidbody.MovePosition(wall.GetCellCenterWorld(cellPosition));
+        if (Status == HeroStatus.HeroRun)
+        {
+            // 셀의 중심으로 옮긴다.
+            Vector3Int cellPosition = wall.WorldToCell(transform.position);
+            rigidbody.MovePosition(wall.GetCellCenterWorld(cellPosition));
 
-        // 이동을 멈춘다.
-        Status = HeroStatus.HeroIdle;
-        nextPoint = transform.position;
-        path.Clear();
+            // 이동을 멈춘다.
+            Status = HeroStatus.HeroIdle;
+            nextPoint = transform.position;
+            path.Clear();
+        }
     }
 
-    void SetNext()
+    void FinishTurn()
     {
-        if (path.Count > 0)
+        if (Status == HeroStatus.HeroRun)
         {
-            nextPoint = path[0];
-            path.RemoveAt(0);
-            renderer.flipX = (nextPoint - transform.position).x < 0;
+            if (CheckEnemies() || path.Count == 0)
+            {
+                Stop();
+            }
+            else
+            {
+                nextPoint = path[0];
+                path.RemoveAt(0);
+                renderer.flipX = (nextPoint - transform.position).x < 0;
+            }
         }
-        else
-            Stop();
     }
 
     void Move()
@@ -104,7 +124,7 @@ public class HeroController : MonoBehaviour
         {
             if (Vector3.Distance(nextPoint, transform.position) < float.Epsilon)
             {
-                SetNext();
+                FinishTurn();
             }
             else
             {
@@ -112,5 +132,15 @@ public class HeroController : MonoBehaviour
                 rigidbody.MovePosition(position);
             }
         }
+    }
+
+    bool CheckEnemies()
+    {
+        Rect area = AttackArea;
+
+        var hitColliders = Physics2D.OverlapAreaAll(area.min, area.max, layerMask: 1 << 8);
+        print(area.min + ", " + area.max + " collides: " + hitColliders.Length);
+
+        return hitColliders.Length > 0;
     }
 }

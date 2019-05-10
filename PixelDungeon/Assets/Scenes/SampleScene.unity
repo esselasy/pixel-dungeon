@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 315851667}
   - component: {fileID: 315851666}
   m_Layer: 0
-  m_Name: Dungeon
+  m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4360,7 +4360,7 @@ GameObject:
   - component: {fileID: 590815664}
   - component: {fileID: 590815663}
   m_Layer: 0
-  m_Name: Enemies
+  m_Name: Mobs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4501,7 +4501,7 @@ Light:
   serializedVersion: 8
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.3
+  m_Intensity: 0.1
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -4572,7 +4572,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1028573071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9916,6 +9916,11 @@ PrefabInstance:
     - target: {fileID: 2336349225252168272, guid: 579980e29754f2a4c8ee334171d062eb,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4623159929412186014, guid: 579980e29754f2a4c8ee334171d062eb,
+        type: 3}
+      propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
