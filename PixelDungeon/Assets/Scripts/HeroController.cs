@@ -18,10 +18,10 @@ public class HeroController : MonoBehaviour
     Animator animator;
     Tilemap wall;
 
-    HeroStatus Status
+    public HeroStatus Status
     {
         get => status;
-        set
+        private set
         {
             status = value;
             print(status);
@@ -62,10 +62,12 @@ public class HeroController : MonoBehaviour
         Vector3 from = transform.position;
         Vector3 to = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         path = AStar.FindPath(wall, from, to);
-        print("FindPath from " + from + " to " + to + ": " + string.Join(", ", path));
+        print("Find path from " + from + " to " + to);
 
         if (path != null && path.Count > 1)
         {
+            print("Path: " + string.Join(", ", path));
+
             // 경로의 첫번째 값은 현재 위치이므로 제외한다.
             path.RemoveAt(0);
             Status = HeroStatus.HeroRun;
